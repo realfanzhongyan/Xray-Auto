@@ -38,7 +38,8 @@
 
 使用 `root` 用户登录服务器，执行以下命令即可开始安装：
 
-`wget -N [https://raw.githubusercontent.com/accforeve/Xray-Auto/main/install.sh](https://raw.githubusercontent.com/accforeve/Xray-Auto/main/install.sh) && bash install.sh`
+```bash
+wget -N [https://raw.githubusercontent.com/accforeve/Xray-Auto/main/install.sh](https://raw.githubusercontent.com/accforeve/Xray-Auto/main/install.sh) && bash install.sh
 
 ## 🎮 常用指令 | Commands
 脚本安装完成后，提供了一些快捷指令用于日常管理：
