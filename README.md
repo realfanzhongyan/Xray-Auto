@@ -55,6 +55,8 @@ bash <(curl -sL [https://raw.githubusercontent.com/accforeve/Xray-Auto/main/remo
 * VLESS 链接：可直接复制导入客户端（如 v2rayN, V2Box, Shadowrocket 等）。
 * 二维码：手机扫码直连。
 
+
+<a name="English"></a>
 ## 🇺🇸 English Description
 An advanced, fully automated deployment script for Xray, featuring VLESS + Reality + XTLS-Vision. Designed for performance, security, and ease of use on Debian and Ubuntu systems.
 ✨ Key Features
