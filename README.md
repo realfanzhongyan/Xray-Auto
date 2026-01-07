@@ -172,14 +172,14 @@ Pursuant to Sections 15 and 16 of the GPL-3.0 license:
 - The developer shall not be held liable for any direct, indirect, incidental, special, or consequential damages (including but not limited to data loss, business interruption, server bans, or system crashes) arising from the use of this script.
 
 ### 3. System Modifications and Risks
-[span_0](start_span)This script requires **root privileges**[span_0](end_span) and performs deep system modifications, including but not limited to:
-- [span_1](start_span)[span_2](start_span)Modifying system timezones and kernel parameters (enabling BBR, configuring Swap)[span_1](end_span)[span_2](end_span).
+- This script requires **root privileges** and performs deep system modifications, including but not limited to:
+- Modifying system timezones and kernel parameters (enabling BBR, configuring Swap).
 - Installing third-party dependencies and system services.
-- [span_3](start_span)[span_4](start_span)Altering firewall rules (iptables/ip6tables) and SSH service configurations[span_3](end_span)[span_4](end_span).
+- Altering firewall rules (iptables/ip6tables) and SSH service configurations.
 **Users assume full responsibility for any system instability or configuration conflicts.** It is strongly recommended to run this script on a clean installation of Debian/Ubuntu and to backup data before execution.
 
 ### 4. Third-Party Services
-- [span_5](start_span)This script retrieves core components and rule files (e.g., GeoIP/GeoSite) from third-party sources (e.g., GitHub, Loyalsoldier)[span_5](end_span). The developer cannot guarantee the continuous availability or security of these external services.
+- This script retrieves core components and rule files (e.g., GeoIP/GeoSite) from third-party sources (e.g., GitHub, Loyalsoldier). The developer cannot guarantee the continuous availability or security of these external services.
 - This tool acts solely as a network utility. The developer is not responsible for the legality, authenticity, or security of any content transmitted or accessed through this tool.
 
 ### 5. Consequences of Abuse
@@ -198,18 +198,18 @@ Any legal consequences or liabilities arising from the illegal use of this proje
 
 ### 2. "AS IS" (按原样) 条款与无担保声明
 根据 GPL-3.0 协议第 15 和 16 条款：
-- [span_0](start_span)本项目**按“原样”提供**，不提供任何明示或暗示的保证，包括但不限于对适销性、特定用途适用性和非侵权性的保证[span_0](end_span)。
+- 本项目**按“原样”提供**，不提供任何明示或暗示的保证，包括但不限于对适销性、特定用途适用性和非侵权性的保证。
 - 开发者不对因使用本脚本而导致的任何直接、间接、偶然、特殊或后果性的损害（包括但不限于数据丢失、业务中断、服务器被封锁或系统崩溃）承担任何责任。
 
 ### 3. 系统修改与风险提示
-- [span_1](start_span)本脚本在运行时需要 root 权限[span_1](end_span)，并会对系统进行深层修改，包括但不限于：
-- [span_2](start_span)[span_3](start_span)修改系统时区与内核参数（开启 BBR、配置虚拟内存 Swap）[span_2](end_span)[span_3](end_span)。
-- [span_4](start_span)安装第三方依赖软件包与系统服务[span_4](end_span)。
-- [span_5](start_span)[span_6](start_span)修改防火墙规则（iptables/ip6tables）与 SSH 服务配置[span_5](end_span)[span_6](end_span)。
+- 本脚本在运行时需要 root 权限，并会对系统进行深层修改，包括但不限于：
+- 修改系统时区与内核参数（开启 BBR、配置虚拟内存 Swap）。
+- 安装第三方依赖软件包与系统服务。
+- 修改防火墙规则与 SSH 服务配置。
 **用户需自行承担运行脚本可能带来的系统不稳定性或配置冲突风险。** 建议在纯净的系统环境下运行，并在操作前做好数据备份。
 
 ### 4. 第三方服务与网络内容
-- [span_7](start_span)[span_8](start_span)本脚本会从第三方源（如 GitHub、Loyalsoldier 等）下载核心组件和规则文件[span_7](end_span)[span_8](end_span)。开发者无法保证这些第三方服务的持续可用性或内容的安全性。
+- 本脚本会从第三方源（如 GitHub、Loyalsoldier 等）下载核心组件和规则文件。开发者无法保证这些第三方服务的持续可用性或内容的安全性。
 - 本脚本仅作为网络通讯工具，不提供任何具体的网络服务。开发者不对用户通过本工具传输、访问的任何内容的合法性、真实性或安全性负责。
 
 ### 5. 滥用后果
