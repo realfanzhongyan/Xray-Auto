@@ -11,16 +11,16 @@
 ## 🇨🇳 中文说明
 这是一个全自动化的 Xray 部署脚本，基于 **VLESS + Reality-Vision/(xhttp)** 顶尖流控协议。专为 Debian 和 Ubuntu 系统设计，提供极致的性能优化与安全防护。
 
-* 版本: v0.2
-* 核心: Xray-core (VLESS + Reality/xhttp)
-* 协议: VLESS+Reality-Vision/xhttp
+* 版本: v0.3
+* 核心: VLESS + Reality (Vision / xhttp)
+* 系统: Debian / Ubuntu
  
 ### ✨ 核心功能
 
 * **⚡️ 极速协议**: 部署最新的 VLESS + Reality-Vision/xhttp 流控组合。
 * **🧠 智能 SNI 优选**: 自动测试并选择延迟最低的大厂域名（Apple, Microsoft 等）作为伪装目标，拒绝卡顿。
 * **🛡️ 独家防火墙策略**: 采用 **白名单模式** (Whitelist)，默认拒绝所有非必要端口，隐藏服务器指纹。
-* **🔄 一键回国模式切换**: 独有的 `mode` 指令，支持一键切换 **阻断回国 (Block CN)** 或 **允许回国 (Allow CN)** 流量。
+* **🔄 一键回国模式切换与信息回显**: 独有的 `mode` 指令，支持一键切换 **阻断回国 (Block CN)** 或 **允许回国 (Allow CN)** 流量。'info' 指令：回显配置、VLESS, 二维码信息。
 * **⚙️ 系统深度优化**: 
     * 自动开启 BBR + FQ 加速。
     * 智能 Swap 管理（内存 < 2G 时自动创建 1G Swap）。
@@ -38,7 +38,6 @@
 |---|---|---|
 | 暴力重置防火墙 | 脚本会执行 iptables -F 清空所有规则。 | 如果你的服务器上有 Docker、K8s 或自定义的路由转发，网络将立即瘫痪。 |
 | 默认拒绝策略 | 仅放行 SSH、443、8443 端口，其余入站流量全部 DROP。 | 如果你修改了 SSH 端口且脚本未检测到，或者使用 VNC/Web面板，你将被锁在服务器外。 |
-| 端口强占 | 强制占用 443 和 8443 端口。 | 如果本机已运行 Nginx/Apache/Caddy 占用 443，Xray 将启动失败且原网站无法访问。 |
 | 流量限制（BT） | 脚本内置路由规则，强制阻断 BitTorrent 协议。 | 无法使用此节点进行 BT/P2P 下载。（防止 DMCA 投诉导致 VPS 被商家封锁）。 |
 
 **2. ⚙️ 系统环境风险 (中等)**
@@ -72,7 +71,7 @@ bash <(curl -sL https://github.com/realfanzhongyan/Xray-Auto/raw/main/remove.sh)
 | 指令 | 说明 |
 | ---- | ---- |
 | `mode` | 查看当前分流策略状态（阻断/允许回国） |
-
+| `info` | 信息回显：包含节点配置信息、VLESS链接，二维码 |
 ### 📝 配置说明
 安装结束后，脚本会自动输出连接信息，包含：
 * 节点配置信息：ip、端口、SNI等，用于手输时使用。
@@ -84,15 +83,16 @@ bash <(curl -sL https://github.com/realfanzhongyan/Xray-Auto/raw/main/remove.sh)
 ## 🇺🇸 English Description
 An advanced, fully automated deployment script for Xray, featuring VLESS + Reality-Vision. Designed for performance, security, and ease of use on Debian and Ubuntu systems.
 
-* Version: v0.2
-* Core: Xray-core (VLESS + Reality/xhttp)  
-* Protocols: VLESS+Reality-Vision/xhttp
+* Version: v0.3
+* Core: VLESS + Reality (Vision / xhttp)
+* OS: : Debian / Ubuntu
 
 ### ✨ Key Features
  * ⚡️ Cutting-edge Protocol: Deploys VLESS + Reality-Vision/xhttp flow control.
  * 🧠 Intelligent SNI Selection: Automatically pings and selects the fastest domain (e.g., Apple, Microsoft) for camouflage to ensure stability.
  * 🛡️ Advanced Security: Uses iptables Whitelist Mode by default, blocking all unauthorized ports to hide server fingerprint.
- * 🔄 One-Key Routing Switch: Exclusive mode command to toggle between Block CN (Block China Traffic) and Allow CN (Allow China Traffic).
+ * 🔄 One-Key Routing Switch: Exclusive 'mode' command to toggle between Block CN (Block China Traffic) and Allow CN (Allow China Traffic). The 'info' command displays configuration details, VLESS links, and QR codes.
+
  * ⚙️ System Optimization:
    * Enables BBR + FQ congestion control.
    * Smart Swap allocation (Auto-adds 1GB Swap if RAM < 2GB).
@@ -109,7 +109,6 @@ An advanced, fully automated deployment script for Xray, featuring VLESS + Reali
 | :--- | :--- | :--- |
 | **Aggressive Firewall Reset** | The script executes `iptables -F` to flush ALL existing rules. | If you are running **Docker**, **Kubernetes**, or custom routing, **your network will break immediately**. |
 | **Strict Default Policy** | Sets default input policy to `DROP`. Only SSH, 443, and 8443 are allowed. | If you use a non-standard SSH port (and the script fails to detect it) or a web panel, **you will be locked out**. |
-| **Port Conflict (443)** | Forces binding to ports `443` and `8443`. | If **Nginx/Apache/Caddy** is already running on port 443, Xray will fail to start, and your existing websites will go down. |
 | **Traffic Restriction (BT)** | **BitTorrent traffic is blocked** by internal routing rules. | You **cannot** use this node for Torrent/P2P downloads. (This is intended to protect your VPS from DMCA bans). |
 
 **2. ⚙️ System Environment Risks (Medium Severity)**
@@ -151,6 +150,7 @@ After installation, use the following commands:
 | Command | Description |
 |---|---|
 | mode | Check current routing status (Block/Allow CN) |
+| Info | Retrieves node configuration, VLESS links, and QR codes|
 
 ### 📝 Configuration Details
 After installation is complete, the script will automatically output connection information, including:
