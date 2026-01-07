@@ -1,0 +1,49 @@
+### Xray Auto Installer v0.3 Update Log
+
+Compared to v0.2, version v0.3 introduces significant improvements in **interactivity, customizability, and system stability**.
+
+#### 1. 🖥️ Interactive Configuration & Countdown Mechanism (Major Change)
+- **v0.2**: Mostly fully automated with hardcoded defaults.
+- **v0.3**: Introduced a `wait_with_countdown` function.
+  - **Countdown Default**: If the user takes no action, the script automatically applies the recommended/default settings after a few seconds.
+  - **Manual Intervention**: Pressing any key stops the countdown, allowing the user to manually input custom values.
+
+#### 2. ⚙️ Global Port Management (Customization)
+- **v0.2**:
+  - Ports were hardcoded: **443** (Vision) and **8443** (xhttp).
+  - SSH port was auto-detected but not changeable during install.
+- **v0.3**:
+  - **Customizable Ports**: Users can now define custom ports for **SSH**, **Vision**, and **xhttp**.
+  - **Occupation Check**: The script now uses `ss -tuln` to check if a port is occupied before confirming it, displaying "Occupied" (Red) or "Free" (Green).
+
+#### 3. 🔍 Enhanced SNI (Camouflage Domain) Selection
+- **v0.2**:
+  - Automatically tested latency and silently selected the best one.
+  - Limited domain list (iCloud, Apple, Microsoft, Bing).
+- **v0.3**:
+  - **Visual Table**: Displays a formatted table with latency for all domains.
+  - **Manual Selection**: Users can choose a specific domain by index number.
+  - **Custom Domain**: Added "Option 0" to allow users to input their own custom SNI domain.
+  - **Expanded List**: Added `www.tesla.com` and `dl.google.com`.
+
+#### 4. 🛠️ System Stability & Self-Healing
+- **v0.2**: Basic `rm lock` commands for apt/dpkg.
+- **v0.3**: Added a robust `pre_flight_check` function.
+  - Checks `dpkg --audit`.
+  - Performs aggressive cleanup of corrupted apt/dpkg databases if errors are found.
+  - Added retry logic: If dependency installation fails, it triggers the self-healing function and tries again.
+
+#### 5. ℹ️ New `info` Command
+- **v0.2**: Only displayed link/QR code once at the end of the script.
+- **v0.3**: Generates a persistent script at `/usr/local/bin/info`.
+  - You can now type `info` in the terminal at any time to reprint the connection links, configuration details, and QR codes.
+
+#### 6. 🎨 Visual & Formatting Improvements
+- **v0.2**: Standard text output.
+- **v0.3**:
+  - Uses `printf` for aligned text tables.
+  - Added background colors (e.g., Red/Yellow backgrounds) for better visibility of warnings and countdowns.
+  - Cleaned up the summary output logic.
+
+#### Summary
+**v0.3 transforms the script from a "One-Click Hardcoded" installer into a "Flexible Interactive" tool.** It allows advanced users to customize ports and domains while keeping it easy for beginners via the countdown auto-confirm feature.
