@@ -42,6 +42,13 @@ bash <(curl -Ls https://raw.githubusercontent.com/ISFZY/Xray-Auto/main/install.s
 
 ```
 
+**🗑️ 卸载**
+如果你想移除 Xray 及其相关配置：
+```
+bash <(curl -sL https://github.com/ISFZY/Xray-Auto/raw/main/remove.sh)
+
+```
+
 ### 🎮 常用命令
 安装完成后，直接在终端输入以下命令：
 
@@ -103,6 +110,12 @@ bash <(curl -Ls https://raw.githubusercontent.com/ISFZY/Xray-Auto/main/install.s
 
 ```
 
+### 🗑️ Uninstall
+To remove Xray and its associated configurations:
+```
+bash <(curl -sL https://github.com/ISFZY/Xray-Auto/raw/main/remove.sh)
+
+```
 
 ### 🎮 Commands
 After installation, you can use these shortcuts:
