@@ -144,7 +144,7 @@ echo -e "${GREEN} 完成${PLAIN}"
 
 # 二次检查
 if ! command -v fail2ban-client &> /dev/null; then
-    echo -e "\n\033[31m❌ 严重错误：软件安装失败。可能是网络源问题，请重试。\033[0m"
+echo -e "\n${RED}❌ 严重错误：软件安装失败。可能是网络源问题，请重试。${PLAIN}"
     exit 1
 fi
 
