@@ -443,7 +443,7 @@ echo -e ""
 echo -e "${BLUE}👇 节点 2 (xhttp) 链接:${PLAIN}"
 echo -e "${LINK_XHTTP}"
 echo -e "=========================================================="
-echo -e "💡 常用命令: ${YELLOW}info${PLAIN} (查看信息) | ${YELLOW}mode${PLAIN} (切换流控) | ${YELLOW}net${PLAIN} (切换网络)"
+echo -e ""
 echo -e "\n${BLUE}📱 手机扫码功能${PLAIN}"
 echo -ne "${YELLOW}   是否显示二维码? (y/n) [默认 n]: ${PLAIN}"
 read CHOICE
@@ -454,6 +454,7 @@ if [[ "$CHOICE" == "y" || "$CHOICE" == "Y" ]]; then
     echo -e "\n${BLUE}>>> 正在生成 xhttp 节点二维码...${PLAIN}"
     qrencode -t ANSIUTF8 "${LINK_XHTTP}"
 fi
+echo -e "💡 常用命令: ${YELLOW}info${PLAIN} (查看信息) | ${YELLOW}mode${PLAIN} (切换流控) | ${YELLOW}net${PLAIN} (切换网络)"
 echo ""
 SCRIPT_EOF
 chmod +x /usr/local/bin/info
@@ -579,6 +580,7 @@ if systemctl restart xray; then
     bash /usr/local/bin/info
     echo -e "\n🎉 安装全部完成！"
 else
+    echo -e "💡 常用命令: ${YELLOW}info${PLAIN} (查看信息) | ${YELLOW}mode${PLAIN} (切换流控) | ${YELLOW}net${PLAIN} (切换网络)"
     echo -e "${RED}${ICON_ERR} Xray 服务启动失败！${PLAIN}"
     echo -e "请运行: systemctl status xray 查看错误日志"
     exit 1
