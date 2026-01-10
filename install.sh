@@ -254,54 +254,78 @@ fi
 echo -e "${GREEN} 完成 ${PLAIN}"
 
 echo -e "\n${BLUE}--- 🔍 智能 SNI 伪装域优选 ---${PLAIN}"
-DOMAINS=("www.icloud.com" "www.apple.com" "itunes.apple.com" "learn.microsoft.com" "www.bing.com" "www.tesla.com")
-BEST_MS=9999; BEST_INDEX=1
+
+RAW_DOMAINS=("www.icloud.com" "www.apple.com" "itunes.apple.com" "learn.microsoft.com" "www.bing.com" "www.tesla.com")
+
+TEMP_FILE=$(mktemp)
+
+for domain in "${RAW_DOMAINS[@]}"; do
+
+    echo -ne "\r${BLUE}   ⏳ 正在测试: ${domain} ...${PLAIN}\033[K"
+    
+    time_cost=$(LC_NUMERIC=C curl $CURL_OPT -w "%{time_connect}" -o /dev/null -s --connect-timeout 2 "https://$domain")
+    
+    if [ -n "$time_cost" ] && [ "$time_cost" != "0.000" ]; then
+
+        ms=$(LC_NUMERIC=C awk -v t="$time_cost" 'BEGIN { printf "%.0f", t * 1000 }')
+        echo "$ms $domain" >> "$TEMP_FILE"
+    else
+
+        echo "999999 $domain" >> "$TEMP_FILE"
+    fi
+done
+
+echo -ne "\r\033[K"
 
 printf "${BG_GREEN} %-4s %-25s %-12s ${PLAIN}\n" "ID" "Domain" "Latency"
 
-for i in "${!DOMAINS[@]}"; do
-    domain="${DOMAINS[$i]}"
-    display_index=$((i+1))
-    
-    time_cost=$(LC_NUMERIC=C curl $CURL_OPT -w "%{time_connect}" -o /dev/null -s --connect-timeout 2 "https://$domain")
-    if [ -n "$time_cost" ] && [ "$time_cost" != "0.000" ]; then
-        ms=$(LC_NUMERIC=C awk -v t="$time_cost" 'BEGIN { printf "%.0f", t * 1000 }')
-        color=$GREEN
-        if [ "$ms" -gt 200 ]; then color=$YELLOW; fi
+SORTED_DOMAINS=() 
+index=1
 
-        if [ "$ms" -lt "$BEST_MS" ]; then BEST_MS=$ms; BEST_INDEX=$display_index; fi
-        printf " %-4s %-25s ${color}%-8s${PLAIN}\n" "$display_index" "$domain" "${ms}ms"
+while read ms domain; do
+    SORTED_DOMAINS+=("$domain")
+    
+    if [ "$ms" == "999999" ]; then
+        display_ms="Timeout"
+        color=$RED
     else
-        printf " %-4s %-25s ${RED}%-8s${PLAIN}\n" "$display_index" "$domain" "Timeout"
+        display_ms="${ms}ms"
+        if [ "$ms" -lt 200 ]; then color=$GREEN; else color=$YELLOW; fi
     fi
-done
+    
+    printf " %-4s %-25s ${color}%-8s${PLAIN}\n" "$index" "$domain" "$display_ms"
+    ((index++))
+    
+done < <(sort -n "$TEMP_FILE")
+
+rm -f "$TEMP_FILE"
 
 printf " %-4s %-25s ${BLUE}%-8s${PLAIN}\n" "0" "自定义输入 (Custom)" "-"
 echo -e "----------------------------------------------"
 
-DEFAULT_SNI=${DOMAINS[$((BEST_INDEX-1))]}
+DEFAULT_SNI=${SORTED_DOMAINS[0]}
+BEST_INDEX=1
 
 SELECTION=""
-for ((i=10; i>0; i--)); do
-
-    echo -ne "\r${GREEN}👉 请选择 SNI ID [0-6] ${PLAIN}(默认: ${YELLOW}${BEST_INDEX}. ${DEFAULT_SNI}${PLAIN}) [${YELLOW}${i}s${PLAIN}]: "
-    
+for ((i=9; i>0; i--)); do
+    echo -ne "\r${GREEN}👉 请选择 SNI ID [0-${#SORTED_DOMAINS[@]}] ${PLAIN}(默认: ${YELLOW}1. ${DEFAULT_SNI}${PLAIN}) [${YELLOW}${i}s${PLAIN}]: "
     read -t 1 -n 1 input_char
-    
     if [ $? -eq 0 ]; then
         SELECTION="$input_char"
-        echo ""
+        echo "" 
         break
     fi
 done
+if [[ -z "$SELECTION" ]]; then echo ""; fi
 
 if [[ -z "$SELECTION" ]]; then
     SNI_HOST="$DEFAULT_SNI"
-    echo -e "⏩ 使用推荐配置: ${GREEN}${SNI_HOST}${PLAIN}"
+    echo -e "⏩ 使用推荐配置 (延迟最低): ${GREEN}${SNI_HOST}${PLAIN}"
 
 elif [[ "$SELECTION" == "0" ]]; then
     while true; do
-        read -p "⌨️  请输入自定义 SNI 域名: " CUSTOM_INPUT
+        echo -ne "${GREEN}⌨️  请输入自定义 SNI 域名: ${PLAIN}"
+        read CUSTOM_INPUT
         if [[ "$CUSTOM_INPUT" =~ ^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$ ]]; then
             SNI_HOST="$CUSTOM_INPUT"
             break
@@ -310,8 +334,8 @@ elif [[ "$SELECTION" == "0" ]]; then
         fi
     done
 
-elif [[ "$SELECTION" =~ ^[1-6]$ ]]; then
-    SNI_HOST=${DOMAINS[$((SELECTION-1))]}
+elif [[ "$SELECTION" =~ ^[1-9]$ ]] && [ "$SELECTION" -le "${#SORTED_DOMAINS[@]}" ]; then
+    SNI_HOST=${SORTED_DOMAINS[$((SELECTION-1))]}
     echo -e "👉 您选择了: ${GREEN}${SNI_HOST}${PLAIN}"
 
 else
