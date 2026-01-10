@@ -453,6 +453,7 @@ if [[ "$CHOICE" == "y" || "$CHOICE" == "Y" ]]; then
     echo -e "\n${BLUE}>>> 正在生成 xhttp 节点二维码...${PLAIN}"
     qrencode -t ANSIUTF8 "${LINK_XHTTP}"
 fi
+echo -e "💡 常用命令: ${YELLOW}info${PLAIN} (查看信息) | ${YELLOW}mode${PLAIN} (切换流控) | ${YELLOW}net${PLAIN} (切换网络)"
 echo ""
 SCRIPT_EOF
 chmod +x /usr/local/bin/info
@@ -486,7 +487,86 @@ esac
 MODE_EOF
 chmod +x /usr/local/bin/mode
 
-echo -ne "${BLUE}⏰ 正在设置自动更新 geoip, geosite 任务 (每周日 4:00)...${PLAIN}"
+cat > /usr/local/bin/net << 'NET_EOF'
+#!/bin/bash
+RED="\033[31m"; GREEN="\033[32m"; YELLOW="\033[33m"; BLUE="\033[36m"; PLAIN="\033[0m"
+CONFIG="/usr/local/etc/xray/config.json"
+GAI_CONF="/etc/gai.conf"
+
+set_system_priority() {
+    local type=$1
+
+    [ ! -f "$GAI_CONF" ] && echo "" > "$GAI_CONF"
+    
+    if [ "$type" == "v4" ]; then
+
+        if grep -q "^precedence ::ffff:0:0/96  100" "$GAI_CONF"; then
+            : # 已经存在，不做操作
+        else
+            echo "precedence ::ffff:0:0/96  100" >> "$GAI_CONF"
+        fi
+        echo -e "   ⚙️  系统层: 已设置 [IPv4 优先]"
+    else
+
+        sed -i '/^precedence ::ffff:0:0\/96  100/d' "$GAI_CONF"
+        echo -e "   ⚙️  系统层: 已恢复 [IPv6 优先/默认]"
+    fi
+}
+
+set_xray_strategy() {
+    local strategy=$1
+    local name=$2
+
+    sed -i "s/\"domainStrategy\": \".*\"/\"domainStrategy\": \"$strategy\"/" "$CONFIG"
+    echo -e "   ⚙️  Xray层: 已设置 [$name]"
+    systemctl restart xray
+}
+
+clear
+echo -e "${BLUE}============================================${PLAIN}"
+echo -e "${YELLOW}       IPv4 / IPv6 优先级切换 (Network)${PLAIN}"
+echo -e "${BLUE}============================================${PLAIN}"
+echo -e "1. IPv4 优先 (推荐, 兼容性最好)"
+echo -e "2. IPv6 优先 (适合 IPv6 线路优秀的机器)"
+echo -e "3. 仅 IPv4   (强制 Xray 只用 IPv4)"
+echo -e "4. 仅 IPv6   (强制 Xray 只用 IPv6)"
+echo -e "${BLUE}--------------------------------------------${PLAIN}"
+read -p "👉 请选择模式 [1-4]: " choice
+
+case "$choice" in
+    1) 
+        echo -e "\n${YELLOW}正在切换为 IPv4 优先模式...${PLAIN}"
+        set_system_priority "v4"
+        set_xray_strategy "IPIfNonMatch" "IPv4 优先 (双栈)"
+        echo -e "${GREEN}✅ 切换完成！${PLAIN}"
+        ;;
+    2) 
+        echo -e "\n${YELLOW}正在切换为 IPv6 优先模式...${PLAIN}"
+        set_system_priority "v6"
+        set_xray_strategy "IPIfNonMatch" "IPv6 优先 (双栈)"
+        echo -e "${GREEN}✅ 切换完成！${PLAIN}"
+        ;;
+    3) 
+        echo -e "\n${YELLOW}正在切换为 仅 IPv4 模式...${PLAIN}"
+        set_system_priority "v4" # 系统也尽量走v4
+        set_xray_strategy "UseIPv4" "仅 IPv4 (Single Stack)"
+        echo -e "${GREEN}✅ 切换完成！${PLAIN}"
+        ;;
+    4) 
+        echo -e "\n${YELLOW}正在切换为 仅 IPv6 模式...${PLAIN}"
+        set_system_priority "v6"
+        set_xray_strategy "UseIPv6" "仅 IPv6 (Single Stack)"
+        echo -e "${GREEN}✅ 切换完成！${PLAIN}"
+        ;;
+    *) 
+        echo "取消操作。" 
+        exit 0
+        ;;
+esac
+NET_EOF
+chmod +x /usr/local/bin/net
+
+echo -ne "${BLUE}⏰ 正在设置自动更新任务 (每周日 4:00)...${PLAIN}"
 
 UPDATE_CMD="systemctl stop xray; wget -q -O /usr/local/share/xray/geoip.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat; wget -q -O /usr/local/share/xray/geosite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat; systemctl restart xray"
 
@@ -498,7 +578,7 @@ systemctl enable xray >/dev/null 2>&1
 if systemctl restart xray; then
     bash /usr/local/bin/info
     echo -e "\n🎉 安装全部完成！"
-    echo -e "💡 常用命令: ${YELLOW}info${PLAIN} (查看信息) | ${YELLOW}mode${PLAIN} (切换流控模式)"
+echo -e "💡 常用命令: ${YELLOW}info${PLAIN} (查看信息) | ${YELLOW}mode${PLAIN} (切换流控) | ${YELLOW}net${PLAIN} (切换网络)"
 else
     echo -e "${RED}${ICON_ERR} Xray 服务启动失败！${PLAIN}"
     echo -e "请运行: systemctl status xray 查看错误日志"
