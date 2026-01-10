@@ -410,7 +410,8 @@ echo -e "${BLUE}👇 节点 2 (xhttp) 链接:${PLAIN}"
 echo -e "${LINK_XHTTP}"
 echo -e "=========================================================="
 echo -e "\n${BLUE}📱 手机扫码功能${PLAIN}"
-read -p "${YELLOW}   是否显示二维码? (y/n) [默认 n]: ${PLAIN}" CHOICE
+echo -ne "${YELLOW}   是否显示二维码? (y/n) [默认 n]: ${PLAIN}"
+read CHOICE
 if [[ "$CHOICE" == "y" || "$CHOICE" == "Y" ]]; then
     echo -e "\n${BLUE}>>> 正在生成 Vision 节点二维码...${PLAIN}"
     qrencode -t ANSIUTF8 "${LINK_VISION}"
