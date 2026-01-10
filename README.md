@@ -26,6 +26,7 @@
 * **📱 贴心工具箱**:
     * `info`：支持动态 IP 显示，提供**交互式二维码**生成（按需显示，不刷屏）。
     * `mode`：一键切换 **阻断回国流量** 或 **允许回国流量**，状态栏带高亮显示。
+    * `net`：一键切换 **ipv4/ipv6**。
 
 ### 🛠️ 环境要求
 * **操作系统**: Debian 10+ / Ubuntu 20.04+ (推荐 Debian 11/12)
@@ -91,6 +92,7 @@ bash <(curl -sL https://github.com/ISFZY/Xray-Auto/raw/main/remove.sh)
 * **📱 Handy Tools**:
     * `info`: View config, dynamic IP detection, and generate **QR Codes**.
     * `mode`: One-click switch between **Block CN Traffic** and **Allow CN Traffic**.
+    * `net`：One-click switch between **ipv4/ipv6**.
 
 ### 🛠️ Requirements
 * **OS**: Debian 10+ / Ubuntu 20.04+ (Debian 12 Recommended).
