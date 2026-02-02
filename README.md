@@ -1,6 +1,6 @@
 # 🚀 Xray-Auto Installer
 
-![Version](https://img.shields.io/badge/version-1.0.2-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-1.0.3-blue?style=flat-square)
 ![Language](https://img.shields.io/badge/language-Bash-4EAA25?style=flat-square&logo=gnu-bash&logoColor=white)
 ![Core](https://img.shields.io/badge/core-Xray-0066CC?style=flat-square&logo=telegram&logoColor=white)
 ![Network](https://img.shields.io/badge/network-IPv4%2FIPv6-orange?style=flat-square)
@@ -58,11 +58,12 @@ bash <(curl -sL https://github.com/ISFZY/Xray-Auto/raw/main/remove.sh)
 | `info` | 查询Xray配置信息 | * 查看当前的 IP、端口、UUID、伪装域名等信息。* 运行后输入 `y` 可在终端生成巨大的二维码供手机扫描。|
 | `ports` | 修改端口 | 1. SSH 2. Vision 3. xhttp |
 | `net` | 切换网络 | 1. **IPv4 优先**: 推荐, 兼容性最好。2. **IPv6 优先**: 适合 IPv6 线路优秀的机器。3. **仅 IPv4**: 强制 Xray 只用 IPv4 。4. **仅 IPv6**: 强制 Xray 只用 IPv6。 |
-| `f2b` | 修改防火墙（Fail2ban) | Fail2ban相关参数 |
-| `swap` | 修改虚拟内存（Swap) | Swap相关参数 |
-| `bbr` | 修改BBR | BBR相关参数 |
-| `bt` | 修改BT流量 | BT相关参数 |
-| `xw` | 调用WARP | WARP相关参数 |
+| `f2b` | 修改防火墙（Fail2ban) | Fail2ban参数 |
+| `swap` | 修改虚拟内存（Swap)及亲和度 | Swap参数 |
+| `bbr` | 修改BBR | 禁用/启用BBR（+fq） |
+| `bt` | 修改BT流量 | 禁用/启用 BT流量 |
+| `xw` | 调用WARP | WARP优选 |
+| `sni` | 修改SNI域名 | 自定义/列表 |
 
 ### 📝 客户端配置参考
 | 参数 | 值 (示例) | 说明 |
